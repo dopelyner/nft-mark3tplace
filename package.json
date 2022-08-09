@@ -1,6 +1,7 @@
 {
   "name": "nft-mark3tplace",
   "version": "0.1.0",
+  "author": "dopelyner",
   "private": true,
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.2",
