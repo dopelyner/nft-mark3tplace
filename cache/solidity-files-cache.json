@@ -298,8 +298,8 @@
       }
     },
     "src/backend/script/Contract.s.sol": {
-      "lastModificationDate": 1660004079052,
-      "contentHash": "3b6ef716ae4cf57e770ac12dfd5d0786",
+      "lastModificationDate": 1660041988678,
+      "contentHash": "3642d05d9c479368231825c40aaa276a",
       "sourceName": "src/backend/script/Contract.s.sol",
       "solcConfig": {
         "settings": {
@@ -327,7 +327,12 @@
           "libraries": {}
         }
       },
-      "imports": [],
+      "imports": [
+        "lib/forge-std/src/Script.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol"
+      ],
       "versionRequirement": "^0.8.13",
       "artifacts": {
         "ContractScript": {
