@@ -299,6 +299,82 @@
         }
       }
     },
+    "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol": {
+      "lastModificationDate": 1660045998940,
+      "contentHash": "97b4e53f26b063f69e1ab9df9d64299e",
+      "sourceName": "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "ReentrancyGuard": {
+          "0.8.15+commit.e14f2714.Linux.gcc": "ReentrancyGuard.sol/ReentrancyGuard.json"
+        }
+      }
+    },
+    "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1660045998948,
+      "contentHash": "ad7c2d0af148c8f9f097d65deeb4da6b",
+      "sourceName": "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "IERC20": {
+          "0.8.15+commit.e14f2714.Linux.gcc": "IERC20.sol/IERC20.json"
+        }
+      }
+    },
     "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol": {
       "lastModificationDate": 1660045998955,
       "contentHash": "c518135fb8fc7d97bbb96c940f08b591",
@@ -791,6 +867,61 @@
         }
       }
     },
+    "src/backend/contracts/KhaosMarketplace.sol": {
+      "lastModificationDate": 1660168081520,
+      "contentHash": "9b4d0f6eac797f662ea9068e37e5485f",
+      "sourceName": "src/backend/contracts/KhaosMarketplace.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Burnable.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Address.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Context.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Counters.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Strings.sol",
+        "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol",
+        "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
+        "src/backend/contracts/KhaosNFT.sol"
+      ],
+      "versionRequirement": "^0.8.13",
+      "artifacts": {
+        "KhaosMarketplace": {
+          "0.8.15+commit.e14f2714.Linux.gcc": "KhaosMarketplace.sol/KhaosMarketplace.json"
+        }
+      }
+    },
     "src/backend/contracts/KhaosNFT.sol": {
       "lastModificationDate": 1660145387291,
       "contentHash": "068989315bfeac780c4aeaa83a769495",
@@ -900,10 +1031,10 @@
         }
       }
     },
-    "test/NFTTest.t.sol": {
-      "lastModificationDate": 1660145479047,
-      "contentHash": "df5f5c040157ce318a8c112e38d8fb78",
-      "sourceName": "test/NFTTest.t.sol",
+    "test/MarketplaceTest.t.sol": {
+      "lastModificationDate": 1660168654542,
+      "contentHash": "0a20db72fb280266ef14851d38edacba",
+      "sourceName": "test/MarketplaceTest.t.sol",
       "solcConfig": {
         "settings": {
           "optimizer": {
@@ -938,6 +1069,8 @@
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol",
         "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol",
@@ -950,12 +1083,13 @@
         "lib/openzeppelin-contracts/contracts/utils/Strings.sol",
         "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol",
         "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol",
+        "src/backend/contracts/KhaosMarketplace.sol",
         "src/backend/contracts/KhaosNFT.sol"
       ],
       "versionRequirement": "^0.8.13",
       "artifacts": {
-        "KhaosNFTTest": {
-          "0.8.15+commit.e14f2714.Linux.gcc": "NFTTest.t.sol/KhaosNFTTest.json"
+        "MarketplaceTest": {
+          "0.8.15+commit.e14f2714.Linux.gcc": "MarketplaceTest.t.sol/MarketplaceTest.json"
         }
       }
     }

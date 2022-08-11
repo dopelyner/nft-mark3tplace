@@ -53,7 +53,7 @@ contract KhaosNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         return royaltyFee;
     }
 
-    function getRoyaltyRecipient() external view returns(address) {
+    function getRoyaltyRecipient() external view returns (address) {
         return royaltyRecipient;
     }
 
