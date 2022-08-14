@@ -868,8 +868,8 @@
       }
     },
     "src/backend/contracts/KhaosMarketplace.sol": {
-      "lastModificationDate": 1660168081520,
-      "contentHash": "9b4d0f6eac797f662ea9068e37e5485f",
+      "lastModificationDate": 1660318904556,
+      "contentHash": "0431acf0fbc2597b20b5cee4eb6351d1",
       "sourceName": "src/backend/contracts/KhaosMarketplace.sol",
       "solcConfig": {
         "settings": {
@@ -923,8 +923,8 @@
       }
     },
     "src/backend/contracts/KhaosNFT.sol": {
-      "lastModificationDate": 1660145387291,
-      "contentHash": "068989315bfeac780c4aeaa83a769495",
+      "lastModificationDate": 1660177408222,
+      "contentHash": "7a000c34fa675a1c2db8ac686deeff73",
       "sourceName": "src/backend/contracts/KhaosNFT.sol",
       "solcConfig": {
         "settings": {
@@ -1031,10 +1031,10 @@
         }
       }
     },
-    "test/MarketplaceTest.t.sol": {
-      "lastModificationDate": 1660168654542,
-      "contentHash": "0a20db72fb280266ef14851d38edacba",
-      "sourceName": "test/MarketplaceTest.t.sol",
+    "test/KhaosMarketplaceTest.t.sol": {
+      "lastModificationDate": 1660483459523,
+      "contentHash": "c2812c8d52c823e756caa3d52e1e51c0",
+      "sourceName": "test/KhaosMarketplaceTest.t.sol",
       "solcConfig": {
         "settings": {
           "optimizer": {
@@ -1088,8 +1088,8 @@
       ],
       "versionRequirement": "^0.8.13",
       "artifacts": {
-        "MarketplaceTest": {
-          "0.8.15+commit.e14f2714.Linux.gcc": "MarketplaceTest.t.sol/MarketplaceTest.json"
+        "KhaosMarketplaceTest": {
+          "0.8.15+commit.e14f2714.Linux.gcc": "KhaosMarketplaceTest.t.sol/KhaosMarketplaceTest.json"
         }
       }
     }
