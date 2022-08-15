@@ -9,7 +9,7 @@ import "./KhaosNFT.sol";
 
 contract KhaosMarketplace is Ownable, ReentrancyGuard {
 
-uint256 public policyFee;
+    uint256 public policyFee;
     address public marketAddress;
 
     // Define a struct based on NFT components
@@ -25,7 +25,6 @@ uint256 public policyFee;
     // ========== Events ========== //
     event Listed_NFT (address indexed _nft, uint256 indexed _tokenId, address _payToken, uint256 _price, address indexed _seller);
     event Bought_NFT (address indexed _nft, uint indexed _tokenId, address _payToken, uint _price, address indexed _seller);
-
 
     // Keep track of all NFT listed on the Marketplace
     mapping(address => mapping(uint256 => NFTstruct)) private listOfNFTs;
@@ -57,7 +56,7 @@ uint256 public policyFee;
         emit Listed_NFT(_nft, _tokenId, _payToken, _price, msg.sender);
     }
     
-        /** 
+    /** 
         @notice Buy a Listed NFT
      */
     function buyNFT(address _nft, uint _tokenId, address _payToken, uint _price) external isNFTListed(_nft, _tokenId) {
@@ -83,13 +82,13 @@ uint256 public policyFee;
         
         // Policy Fee
         uint256 totalPolicyFee = getPolicyFeeAmount(_price);
-        IRC20(listedNFT.payToken).transferFrom(msg.sender, marketAddress, totalPolicyFee);
+        IERC20(listedNFT.payToken).transferFrom(msg.sender, marketAddress, totalPolicyFee);
 
         // Transfer value to nft owner
-        IRC20(listedNFT.payToken).transferFrom(msg.sender, listedNft.seller, totalPrice - totalPolicyFee);
+        IERC20(listedNFT.payToken).transferFrom(msg.sender, listedNFT.seller, totalPrice - totalPolicyFee);
 
         // Transfer NFT to buyer
-        IRC20(listedNFT.payToken).safeTransferFrom(addres(this), msg.sender, listedNFT.tokenId);
+        IERC20(listedNFT.payToken).transferFrom(address(this), msg.sender, listedNFT.tokenId);
 
         emit Bought_NFT(listedNFT.nft, listedNFT.tokenId, listedNFT.payToken, _price, msg.sender);
     }
@@ -103,7 +102,7 @@ uint256 public policyFee;
 
     function updatePolicyFee(uint256 _policyFee) external onlyOwner {
         require(_policyFee <= 10000, "Can't be more than 10 percent");
-        policyFee = _policyFee;s
+        policyFee = _policyFee;
     }
 
     function getRoyaltyAmount(uint256 _royaltyFee, uint256 _price) public pure returns (uint256) {

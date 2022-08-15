@@ -2,8 +2,8 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/backend/contracts/KhaosNFT.sol";
-import "../src/backend/contracts/KhaosMarketplace.sol";
+import "../src/contracts/KhaosNFT.sol";
+import "../src/contracts/KhaosMarketplace.sol";
 
 contract KhaosMarketplaceTest is Test {
 
@@ -24,6 +24,10 @@ contract KhaosMarketplaceTest is Test {
         emit log_named_uint("Policy Fee", marketplace.policyFee());
 
         emit log_named_address("Artist Address", address(artist));
+    }
+
+    function testMarketplaceAddress() public {
+        assertEq(address(1), marketplace.marketAddress());
     }
 
     function test_artistDeployNFT() public {
