@@ -6,11 +6,29 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./KhaosNFT.sol";
+interface IKhaosNFTFactory {
+    function createNFTCollection(
+        string memory _name,
+        string memory _symbol,
+        uint256 _royaltyFee
+    ) external;
+
+    function isKhaosNFT(address _nft) external view returns (bool);
+}
+interface IKhaosNFT {
+    function getRoyaltyFee() external view returns (uint256);
+
+    function getRoyaltyRecipient() external view returns (address);
+}
+
 
 contract KhaosMarketplace is Ownable, ReentrancyGuard {
-
+    
+    // ========== State Variables ========== //
     uint256 public policyFee;
     address public marketAddress;
+    IKhaosNFTFactory private immutable khaosNFTFactory;
+
 
     // Define a struct based on NFT components
     struct NFTstruct {
@@ -28,11 +46,15 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
 
     // Keep track of all NFT listed on the Marketplace
     mapping(address => mapping(uint256 => NFTstruct)) private listOfNFTs;
+    // Keep track payable functionality
+    mapping(address => bool) private payableToken;
+    address[] private tokens;
 
-    constructor(uint256 _policyFee, address _marketAddress) {
+    constructor(uint256 _policyFee, address _marketAddress, IKhaosNFTFactory _khaosNFTFactory) {
         require(policyFee <= 10000, "Can't be more than 10 percent");
         policyFee = _policyFee;
         marketAddress = _marketAddress;
+        khaosNFTFactory = _khaosNFTFactory;
     }
 
     /** 
@@ -59,7 +81,7 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
     /** 
         @notice Buy a Listed NFT
      */
-    function buyNFT(address _nft, uint _tokenId, address _payToken, uint _price) external isNFTListed(_nft, _tokenId) {
+    function buyNFT(address _nft, uint _tokenId, address _payToken, uint _price) external isNFTListed(_nft, _tokenId) isPayableToken(_payToken) {
         NFTstruct storage listedNFT = listOfNFTs[_nft][_tokenId];
         require(_payToken != address(0) && _payToken == listedNFT.payToken);
         require(!listedNFT.sold, "NFT was already sold");
@@ -88,7 +110,7 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
         IERC20(listedNFT.payToken).transferFrom(msg.sender, listedNFT.seller, totalPrice - totalPolicyFee);
 
         // Transfer NFT to buyer
-        IERC20(listedNFT.payToken).transferFrom(address(this), msg.sender, listedNFT.tokenId);
+        IERC721(listedNFT.nft).safeTransferFrom(address(this), msg.sender, listedNFT.tokenId);
 
         emit Bought_NFT(listedNFT.nft, listedNFT.tokenId, listedNFT.payToken, _price, msg.sender);
     }
@@ -99,7 +121,16 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
         require(listedNFT.seller != address(0) && !listedNFT.sold, "Not listed");
         _;
     }
+    modifier isKhaosNFT(address _nft) {
+        require(khaosNFTFactory.isKhaosNFT(_nft), "Not Khaos NFT");
+        _;
+    }
+    modifier isPayableToken(address _payToken) {
+        require(_payToken != address(0) && payableToken[_payToken],"Invalid pay token");
+        _;
+    }
 
+    // ========== Aux Functions ========== //
     function updatePolicyFee(uint256 _policyFee) external onlyOwner {
         require(_policyFee <= 10000, "Can't be more than 10 percent");
         policyFee = _policyFee;
@@ -111,5 +142,20 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
 
     function getPolicyFeeAmount(uint256 _price) public view returns (uint256) {
         return (_price * policyFee) / 10000;
+    }
+
+    function getPayableTokens() external view returns (address[] memory) {
+        return tokens;
+    }
+
+    function checkIsPayableToken(address _payableToken) external view returns (bool) {
+        return payableToken[_payableToken];
+    }
+
+    function addPayableToken(address _token) external onlyOwner {
+        require(_token != address(0), "Invalid token");
+        require(!payableToken[_token], "Already payable token");
+        payableToken[_token] = true;
+        tokens.push(_token);
     }
 }
