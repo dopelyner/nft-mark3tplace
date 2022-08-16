@@ -1,10 +1,10 @@
-### NFT Marketplace
+### NFT Marketplace Smart Contract
 ___
 
 Currently learning solidity...
 
 
-[ Marketplace implementation ]
+## Marketplace implementation so far
 * Sell NFTs
 * Buy NFTs
 
