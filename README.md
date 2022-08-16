@@ -1,11 +1,13 @@
 ### NFT Marketplace
 ___
 
-Learning solidity...
+Currently learning solidity...
 
-Marketplace implementation: 
+
+[ Marketplace implementation ]
 * Sell NFTs
 * Buy NFTs
+
 
 1. Install dependecies
 ```
