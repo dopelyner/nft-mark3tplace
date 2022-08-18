@@ -4,6 +4,7 @@ pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 import "../src/contracts/KhaosNFT.sol";
 import "../src/contracts/KhaosMarketplace.sol";
+import "../src/contracts/KhaosNFTFactory.sol";
 
 contract KhaosMarketplaceTest is Test {
     using stdStorage for StdStorage;
@@ -11,60 +12,56 @@ contract KhaosMarketplaceTest is Test {
     KhaosNFT nft;
     KhaosMarketplace marketplace;
     IKhaosNFTFactory factory;
+    KhaosNFTFactory khaosFactory;
     uint256 private constant policyFee = 250;
-    address private artist = address(2);
-    address private bob = address(3);
-    address private alice = address(4);
+    uint256 private constant royalty = 5000;
+    uint256 private constant price = 1 ether;
+    address private marketAddr = address(0x11345);
+    address private artist = address(0x1111);
+    address private bob = address(0x1222);
 
     function setUp() public {
-        marketplace = new KhaosMarketplace(policyFee, address(1), factory);
-        factory = IKhaosNFTFactory(msg.sender);
+        vm.deal(artist, 5 ether);
+        vm.deal(bob, 5 ether);
 
-        vm.deal(artist, 2 ether);
-        vm.deal(marketplace.marketAddress(), 2 ether);
+        vm.startPrank(artist);
+        marketplace = new KhaosMarketplace(policyFee, marketAddr, factory);
+        khaosFactory = new KhaosNFTFactory();
+        factory = IKhaosNFTFactory(artist);
+
+        emit log_named_address("Market", marketplace.marketAddress());
+        emit log_named_address("Artist", artist);
+        emit log_named_address("Sender setup", msg.sender);
+        vm.stopPrank();
     }
-
-    // function testCreateNFTColletion() public {
-    //     factory.createNFTCollection("Khaos NFTs", "KHS", 250);
-    //     emit log_named_address("factory: ", address(factory));
-    // }
-
-    function testGetDeployerAddress() public {
-        emit log_named_address("Deployer Address", msg.sender);
-    }
-
-    function testMarketplaceAddress() public {
-        emit log_named_address("Marketplace Address", marketplace.marketAddress());
-        assertEq(address(1), marketplace.marketAddress());
+    function testArtistDeployNFT() public {
+        vm.startPrank(artist);
+        nft = new KhaosNFT("Khaos NFT", "KHS", artist, royalty, artist);
+        emit log_named_address("NFT Owner ", address(nft.owner()));
+        vm.stopPrank();
     }
     
-    function testArtistAddress() public {
-        assertEq(address(2), artist);
-        emit log_named_address("Artist Address", address(artist));
+    function testMarketplaceAddress() public {
+        assertEq(marketAddr, marketplace.marketAddress());
     }
 
-    function testDeployNFT() public {
-        emit log_named_address("Sender", address(msg.sender));
-        nft = new KhaosNFT("Khaos NFT", "KHS", msg.sender, policyFee, artist);
-        emit log_named_address("NFT Owner ", address(nft.owner()));
-    }
-
-    function testUpdatePolicyFee() public {
+    function testArtistUpdatePolicyFee() public {
+        vm.startPrank(artist);
         emit log_named_uint("Policy Fee", marketplace.policyFee());
         marketplace.updatePolicyFee(5000);
         assertEq(marketplace.policyFee(), 5000);
         emit log_named_uint("Updated Policy Fee", marketplace.policyFee());
+        vm.stopPrank();
     }
 
-    function testFailSafeMintToZeroAddress() public {
+    function testFailMintToZeroAddress() public {
         nft.safeMint(address(0), "uri");
-        emit log_named_address("NFT address", address(nft));
     }
-
-    function testMintNFT() public {
-        marketplace.addPayableToken(address(nft));
-        nft.safeMint(address(this), "artemis.education");
-        emit log_named_address("NFT address", address(nft));
+    
+    function testCreateNFTColletion() public { 
+        vm.startPrank(artist);
+        khaosFactory.createNFTCollection("Silly NFT","SLY", royalty, artist);
+        vm.stopPrank();
     }
 
 }

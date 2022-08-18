@@ -7,20 +7,13 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./KhaosNFT.sol";
 interface IKhaosNFTFactory {
-    function createNFTCollection(
-        string memory _name,
-        string memory _symbol,
-        uint256 _royaltyFee
-    ) external;
-
+    function createNFTCollection(string memory _name, string memory _symbol, uint256 _royaltyFee) external;
     function isKhaosNFT(address _nft) external view returns (bool);
 }
 interface IKhaosNFT {
     function getRoyaltyFee() external view returns (uint256);
-
     function getRoyaltyRecipient() external view returns (address);
 }
-
 
 contract KhaosMarketplace is Ownable, ReentrancyGuard {
     
@@ -29,9 +22,8 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
     address public marketAddress;
     IKhaosNFTFactory private immutable khaosNFTFactory;
 
-
     // Define a struct based on NFT components
-    struct NFTstruct {
+    struct Listing {
         address nft;
         uint256 tokenId;
         address seller;
@@ -45,7 +37,7 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
     event Bought_NFT (address indexed _nft, uint indexed _tokenId, address _payToken, uint _price, address indexed _seller);
 
     // Keep track of all NFT listed on the Marketplace
-    mapping(address => mapping(uint256 => NFTstruct)) private listOfNFTs;
+    mapping(address => mapping(uint256 => Listing)) private listOfNFTs;
     // Keep track payable functionality
     mapping(address => bool) private payableToken;
     address[] private tokens;
@@ -59,14 +51,13 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
 
     /** 
         @notice List NFT on Marketplace
-        @dev  ===> Add modifier to restrict if is payable
      */
-    function listNFT(address _nft, uint256 _tokenId, address _payToken, uint256 _price) external {
+    function listNFT(address _nft, uint256 _tokenId, address _payToken, uint256 _price) external isKhaosNFT(_nft) isPayableToken(_payToken) {
         IERC721 nft = IERC721(_nft);
         require(nft.ownerOf(_tokenId) == msg.sender, "Caller is not the NFT owner");
         nft.transferFrom(msg.sender, address(this), _tokenId);
 
-        listOfNFTs[_nft][_tokenId] = NFTstruct({
+        listOfNFTs[_nft][_tokenId] = Listing({
             nft: _nft,
             tokenId: _tokenId,
             seller: msg.sender,
@@ -82,43 +73,43 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
         @notice Buy a Listed NFT
      */
     function buyNFT(address _nft, uint _tokenId, address _payToken, uint _price) external isNFTListed(_nft, _tokenId) isPayableToken(_payToken) {
-        NFTstruct storage listedNFT = listOfNFTs[_nft][_tokenId];
-        require(_payToken != address(0) && _payToken == listedNFT.payToken);
-        require(!listedNFT.sold, "NFT was already sold");
-        require(_price >= listedNFT.price);
+        Listing storage listingNFT = listOfNFTs[_nft][_tokenId];
+        require(_payToken != address(0) && _payToken == listingNFT.payToken);
+        require(!listingNFT.sold, "NFT was already sold");
+        require(_price >= listingNFT.price);
 
-        listedNFT.sold = true;
+        listingNFT.sold = true;
         uint256 totalPrice = _price;
 
         // Royalties
-        KhaosNFT nft = KhaosNFT(listedNFT.nft);
+        KhaosNFT nft = KhaosNFT(listingNFT.nft);
         address royaltyRecipient = nft.getRoyaltyRecipient();
         uint256 royaltyFee = nft.getRoyaltyFee();
 
         // Transfer royalty value to owner
         if (royaltyFee > 0) {
             uint256 royaltyAmount = getRoyaltyAmount(royaltyFee, _price);
-            IERC20(listedNFT.payToken).transferFrom(msg.sender, royaltyRecipient, royaltyAmount);
+            IERC20(listingNFT.payToken).transferFrom(msg.sender, royaltyRecipient, royaltyAmount);
             totalPrice -= royaltyAmount;
         }
         
         // Policy Fee
         uint256 totalPolicyFee = getPolicyFeeAmount(_price);
-        IERC20(listedNFT.payToken).transferFrom(msg.sender, marketAddress, totalPolicyFee);
+        IERC20(listingNFT.payToken).transferFrom(msg.sender, marketAddress, totalPolicyFee);
 
         // Transfer value to nft owner
-        IERC20(listedNFT.payToken).transferFrom(msg.sender, listedNFT.seller, totalPrice - totalPolicyFee);
+        IERC20(listingNFT.payToken).transferFrom(msg.sender, listingNFT.seller, totalPrice - totalPolicyFee);
 
         // Transfer NFT to buyer
-        IERC721(listedNFT.nft).safeTransferFrom(address(this), msg.sender, listedNFT.tokenId);
+        IERC721(listingNFT.nft).safeTransferFrom(address(this), msg.sender, listingNFT.tokenId);
 
-        emit Bought_NFT(listedNFT.nft, listedNFT.tokenId, listedNFT.payToken, _price, msg.sender);
+        emit Bought_NFT(listingNFT.nft, listingNFT.tokenId, listingNFT.payToken, _price, msg.sender);
     }
     
     // ========== Modifiers ========== //
     modifier isNFTListed(address _nft, uint256 _tokenId) {
-        NFTstruct memory listedNFT = listOfNFTs[_nft][_tokenId];
-        require(listedNFT.seller != address(0) && !listedNFT.sold, "Not listed");
+        Listing memory listingNFT = listOfNFTs[_nft][_tokenId];
+        require(listingNFT.seller != address(0) && !listingNFT.sold, "Not listed");
         _;
     }
     modifier isKhaosNFT(address _nft) {
