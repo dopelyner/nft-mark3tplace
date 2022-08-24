@@ -30,13 +30,12 @@ contract KhaosNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         transferOwnership(_owner);
     }
 
-    function safeMint(address to, string memory uri) public onlyOwner {
+    function safeMint(address to, string memory uri) payable public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
-
 
     /** OVERRIDES REQUIRED BY SOLIDITY */
 

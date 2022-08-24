@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-// Author: kofkuiper
 pragma solidity ^0.8.13;
 
 import "./KhaosNFT.sol";

@@ -72,7 +72,7 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
     /** 
         @notice Buy a Listed NFT
      */
-    function buyNFT(address _nft, uint _tokenId, address _payToken, uint _price) external isNFTListed(_nft, _tokenId) isPayableToken(_payToken) {
+    function buyNFT(address _nft, uint _tokenId, address _payToken, uint _price) payable external isNFTListed(_nft, _tokenId) isPayableToken(_payToken) {
         Listing storage listingNFT = listOfNFTs[_nft][_tokenId];
         require(_payToken != address(0) && _payToken == listingNFT.payToken);
         require(!listingNFT.sold, "NFT was already sold");
