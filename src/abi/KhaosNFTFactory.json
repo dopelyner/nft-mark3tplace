@@ -1,0 +1,93 @@
+{
+    "address": "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
+    "abi": [
+        {
+            "type": "event",
+            "anonymous": false,
+            "name": "CreatedNFTCollection",
+            "inputs": [
+                {
+                    "type": "address",
+                    "name": "creator",
+                    "indexed": false
+                },
+                {
+                    "type": "address",
+                    "name": "nft",
+                    "indexed": false
+                },
+                {
+                    "type": "string",
+                    "name": "name",
+                    "indexed": false
+                },
+                {
+                    "type": "string",
+                    "name": "symbol",
+                    "indexed": false
+                }
+            ]
+        },
+        {
+            "type": "function",
+            "name": "createNFTCollection",
+            "constant": false,
+            "payable": false,
+            "inputs": [
+                {
+                    "type": "string",
+                    "name": "_name"
+                },
+                {
+                    "type": "string",
+                    "name": "_symbol"
+                },
+                {
+                    "type": "uint256",
+                    "name": "_royaltyFee"
+                },
+                {
+                    "type": "address",
+                    "name": "_royaltyRecipient"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "type": "function",
+            "name": "getOwnCollections",
+            "constant": true,
+            "stateMutability": "view",
+            "payable": false,
+            "inputs": [
+                {
+                    "type": "address",
+                    "name": "_owner"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "address[]"
+                }
+            ]
+        },
+        {
+            "type": "function",
+            "name": "isKhaosNFT",
+            "constant": true,
+            "stateMutability": "view",
+            "payable": false,
+            "inputs": [
+                {
+                    "type": "address",
+                    "name": "_nft"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        }
+    ]
+}
