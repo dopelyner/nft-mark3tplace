@@ -66,7 +66,7 @@ export const uploadFileToIPFS = async(file) => {
 
     return axios 
         .post(url, data, {
-            maxBodyLength: 'Infinity',
+            // maxBodyLength: 'Infinity',
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
                 pinata_api_key: key,

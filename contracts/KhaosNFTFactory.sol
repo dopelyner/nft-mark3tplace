@@ -31,8 +31,8 @@ contract KhaosNFTFactory {
         emit CreatedNFTCollection(msg.sender, address(nft), _name, _symbol);
     }
 
-    function getOwnCollections(address _owner) external view returns (address[] memory) {
-        return nfts[_owner];
+    function getOwnCollections() external view returns (address[] memory) {
+        return nfts[msg.sender];
     }
 
     function isKhaosNFT(address _nft) external view returns (bool) {

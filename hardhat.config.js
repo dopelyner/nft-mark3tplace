@@ -1,3 +1,4 @@
+//require('dotenv').config();
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-ethers");
 const fs = require('fs');
@@ -14,20 +15,23 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
+    localhost: {
+      url: "http://127.0.0.1:8545"
+    },
     hardhat: {
       chainId: 1337
     },
     mumbai: {
-      url: `https://polygon-mumbai.g.alchemy.com/v2/I2RmBYMKA0SocRsNsMsQje9tqUtvv5I4`,
-      accounts: process.env.privateKey
+      url: `https://polygon-mumbai.g.alchemy.com/v2/`,
+      accounts: ['']
     },
     matic: {
-      url: "https://polygon-mainnet.g.alchemy.com/v2/I2RmBYMKA0SocRsNsMsQje9tqUtvv5I4",
-      accounts: process.env.privateKey
+      url: "https://polygon-mainnet.g.alchemy.com/v2/",
+      accounts: ['']
     },
     goerli: {
-      url: `https://eth-goerli.g.alchemy.com/v2/I2RmBYMKA0SocRsNsMsQje9tqUtvv5I4`,
-      accounts: process.env.privateKey
+      url: `https://eth-goerli.g.alchemy.com/v2/`,
+      accounts: ['']
     }
   },
   solidity: {

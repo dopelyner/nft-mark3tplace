@@ -154,12 +154,6 @@ contract KhaosMarketplace is Ownable, ReentrancyGuard {
             msg.sender
         );
     }
-    /**
-        @notice This will return all the NFTs currently listed to be sold on the marketplace
-     */
-    // function getAllNFTs() public view returns (Listing[] memory) {
-
-    // }
 
     // ========== Modifiers ========== //
     modifier isNFTListed(address _nft, uint256 _tokenId) {

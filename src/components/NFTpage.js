@@ -39,7 +39,6 @@ async function getNFTData(tokenId) {
     console.log(item);
     updateData(item);
     updateDataFetched(true);
-    console.log("address", addr)
     updateCurrAddress(addr);
 }
 
@@ -72,7 +71,7 @@ async function buyNFT(tokenId) {
         getNFTData(tokenId);
 
     return(
-        <div style={{"min-height":"100vh"}}>
+        <div style={{"minHeight":"100vh"}}>
             <Navbar></Navbar>
             <div className="flex ml-20 mt-20">
                 <img src={data.image} alt="" className="w-2/5" />
