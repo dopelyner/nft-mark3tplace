@@ -3,6 +3,8 @@ ___
 
 Currently learning solidity...
 
+Project not finished. Yet. 
+
 
 ## Marketplace implementation 
 

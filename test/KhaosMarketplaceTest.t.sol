@@ -9,7 +9,7 @@ import "../src/contracts/KhaosNFTFactory.sol";
 contract KhaosMarketplaceTest is Test {
     KhaosNFT nft;
     KhaosMarketplace marketplace;
-    IKhaosNFTFactory factory;
+    KhaosNFTFactory factory;
     KhaosNFTFactory khaosFactory;
 
     uint256 private constant policyFee = 250;
@@ -27,7 +27,7 @@ contract KhaosMarketplaceTest is Test {
         marketplace = new KhaosMarketplace(policyFee, marketAddr, factory);
 
         khaosFactory = new KhaosNFTFactory();
-        factory = IKhaosNFTFactory(artist);
+        factory = KhaosNFTFactory(artist);
     }
 
     function testMarketplaceAddress() public {
